@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Favourite Places App</string>
+    <string name="buttonText">Click to add places</string>
+    <string name="title_activity_maps">Map</string>
+</resources>

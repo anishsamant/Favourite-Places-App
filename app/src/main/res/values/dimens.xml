@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="topMargin">10dp</dimen>
+    <dimen name="leftRightMargin">15dp</dimen>
+    <dimen name="buttonTextSize">16sp</dimen>
+    <dimen name="listTextSize">24sp</dimen>
+    <dimen name="padding">10sp</dimen>
+    <dimen name="lineHeight">2dp</dimen>
+</resources>
