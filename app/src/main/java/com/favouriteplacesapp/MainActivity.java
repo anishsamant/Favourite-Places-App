@@ -1,8 +1,11 @@
 package com.favouriteplacesapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -85,6 +88,54 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this,MapsActivity.class);
                 intent.putExtra("placesInfo",i);
                 startActivity(intent);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                final int del=i;
+
+                new AlertDialog.Builder(MainActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Are you sure")
+                        .setMessage("Do you want to delete this place?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                places.remove(del);
+                                locations.remove(del);
+                                placesArrayAdapter.notifyDataSetChanged();
+
+                                SharedPreferences sp=getApplicationContext().getSharedPreferences(getPackageName(),Context.MODE_PRIVATE);
+                                SharedPreferences.Editor ed=sp.edit();
+
+                                ArrayList<String> lat=new ArrayList<>();
+                                ArrayList<String> lon=new ArrayList<>();
+
+                                for(LatLng cor:locations)
+                                {
+                                    lat.add(Double.toString(cor.latitude));
+                                    lon.add(Double.toString(cor.longitude));
+                                }
+
+                                try {
+                                    ed.putString("places",ObjectSerializer.serialize(places));
+                                    ed.putString("latitudes",ObjectSerializer.serialize(lat));
+                                    ed.putString("longitudes",ObjectSerializer.serialize(lon));
+                                    ed.commit();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        })
+                        .setNegativeButton("No",null)
+                        .show();
+
+                return true;
             }
         });
 
